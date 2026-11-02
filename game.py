@@ -40,9 +40,6 @@ def bit(row, col):
 def has_three(stones):
     return any(stones & w == w for w in WINDOWS)
 
-def can_still_make_three(x, o):
-    return any(x & w == 0 or o & w == 0 for w in WINDOWS)
-
 def print_board(players):
     print("\n   " + " ".join(str(col + 1) for col in range(BOARD_SIZE)))
     for row in range(BOARD_SIZE):
@@ -87,9 +84,9 @@ def main():
             print(f"{SYMBOLS[turn]} hat drei in einer Reihe und verliert!")
             return
 
-        if not can_still_make_three(players[0], players[1]):
+        if (players[0] | players[1]) == (1 << (BOARD_SIZE * BOARD_SIZE)) - 1:
             print_board(players)
-            print("Unentschieden: keine Dreierreihe mehr möglich.")
+            print("Unentschieden: alle Felder sind belegt.")
             return
 
         turn = 1 - turn
